@@ -9,7 +9,11 @@
         "__id__": 1
       }
     ],
-    "_variables": {}
+    "_variables": {
+      "attack": {
+        "__id__": 14
+      }
+    }
   },
   {
     "__type__": "cc.animation.Layer",
@@ -32,9 +36,19 @@
       },
       {
         "__id__": 5
+      },
+      {
+        "__id__": 6
+      },
+      {
+        "__id__": 9
       }
     ],
-    "_transitions": [],
+    "_transitions": [
+      {
+        "__id__": 12
+      }
+    ],
     "_entryState": {
       "__id__": 3
     },
@@ -47,6 +61,11 @@
   },
   {
     "__type__": "cc.animation.State",
+    "__editorExtras__": {
+      "centerX": -170,
+      "centerY": -22,
+      "id": "16488006097790.19082591841123508"
+    },
     "name": "Entry"
   },
   {
@@ -55,6 +74,104 @@
   },
   {
     "__type__": "cc.animation.State",
+    "__editorExtras__": {
+      "centerX": 222,
+      "centerY": -16,
+      "id": "16488006082120.24325537981457135"
+    },
     "name": "Any"
+  },
+  {
+    "__type__": "cc.animation.Motion",
+    "__editorExtras__": {
+      "centerX": -139.296875,
+      "centerY": 32,
+      "id": "16488006224810.9581420104290632"
+    },
+    "name": "idle",
+    "_components": [],
+    "motion": {
+      "__id__": 7
+    },
+    "speed": {
+      "__id__": 8
+    }
+  },
+  {
+    "__type__": "cc.animation.ClipMotion",
+    "__editorExtras__": {
+      "id": "16488006224800.024501305933257278",
+      "centerX": 0,
+      "centerY": 0
+    },
+    "clip": {
+      "__uuid__": "ea43fa81-3bd6-4350-9546-c8377247b520",
+      "__expectedType__": "cc.AnimationClip"
+    }
+  },
+  {
+    "__type__": "cc.animation.BindableNumber",
+    "variable": "",
+    "value": 1
+  },
+  {
+    "__type__": "cc.animation.Motion",
+    "__editorExtras__": {
+      "centerX": 130.703125,
+      "centerY": 92,
+      "id": "16488006322800.23500892980375543"
+    },
+    "name": "idle",
+    "_components": [],
+    "motion": {
+      "__id__": 10
+    },
+    "speed": {
+      "__id__": 11
+    }
+  },
+  {
+    "__type__": "cc.animation.ClipMotion",
+    "__editorExtras__": {
+      "id": "16488006322790.6331637236643397",
+      "centerX": 0,
+      "centerY": 0
+    },
+    "clip": {
+      "__uuid__": "ea43fa81-3bd6-4350-9546-c8377247b520",
+      "__expectedType__": "cc.AnimationClip"
+    }
+  },
+  {
+    "__type__": "cc.animation.BindableNumber",
+    "variable": "",
+    "value": 1
+  },
+  {
+    "__type__": "cc.animation.AnimationTransition",
+    "from": {
+      "__id__": 6
+    },
+    "to": {
+      "__id__": 9
+    },
+    "conditions": [
+      {
+        "__id__": 13
+      }
+    ],
+    "duration": 0.3,
+    "relativeDuration": false,
+    "exitConditionEnabled": true,
+    "_exitCondition": 1
+  },
+  {
+    "__type__": "cc.animation.TriggerCondition",
+    "trigger": "attack"
+  },
+  {
+    "__type__": "cc.animation.Variable",
+    "_type": 2,
+    "_value": false
   }
 ]
