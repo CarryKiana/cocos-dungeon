@@ -1,4 +1,5 @@
 import level1 from './level1'
+import level2 from './level2'
 
 import { DIRECTION_ENUM, ENTITY_TYPE_ENUM, ENTITY_STATE_ENUM, TILE_TYPE_ENUM } from '../Enum'
 
@@ -32,7 +33,8 @@ export interface ILevel  {
 }
 
 const levels: Record<string, ILevel> = {
-  level1
+  level1,
+  level2,
 }
 
 export default levels

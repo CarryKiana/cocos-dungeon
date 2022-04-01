@@ -27,9 +27,9 @@ export default class EventManager extends Singleton {
     }
   }
   emit (eventName: string, ...params: unknown[]) {
-    if (this.eventDic.has(eventName)) {
+    if (this.eventDic.has(eventName)) {-
       this.eventDic.get(eventName).forEach(({func, ctx}) => {
-        ctx?func(...params).apply(ctx, params) : func(...params)
+        ctx?func.apply(ctx, params):func(...params)
       })
     }
   }
