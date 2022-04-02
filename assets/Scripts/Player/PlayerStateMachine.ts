@@ -1,23 +1,11 @@
 import { _decorator, Component, Animation, AnimationClip, animation, SpriteFrame } from 'cc';
 import State from '../../Base/State';
-import { StateMachine } from '../../Base/StateMachine';
+import { getInitParamsNumber, getInitParamsTrigger, StateMachine } from '../../Base/StateMachine';
 import { CONTROL_ENUM, EVENT_ENUM, FSM_PARAM_TYPE_ENUM, PARAMS_NAME_ENUM } from '../../Enum';
 import EventManager from '../../Runtime/EventManager';
 const { ccclass, property } = _decorator
 
-type ParamsValueType = boolean | number
 
-export interface IParamsValue {
-  type: FSM_PARAM_TYPE_ENUM,
-  value: ParamsValueType
-}
-
-export const getInitParamsTrigger = () => {
-  return {
-    type: FSM_PARAM_TYPE_ENUM.TRIGGER,
-    value: false
-  }
-}
 
 @ccclass('PlayerStateMachine')
 export class PlayerStateMachine extends StateMachine {
@@ -34,6 +22,8 @@ export class PlayerStateMachine extends StateMachine {
     this.params.set(PARAMS_NAME_ENUM.IDLE, getInitParamsTrigger())
 
     this.params.set(PARAMS_NAME_ENUM.TURNLEFT, getInitParamsTrigger())
+
+    this.params.set(PARAMS_NAME_ENUM.DIRECTION,getInitParamsNumber())
   }
 
   initStateMachine () {
