@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Sprite, UITransform, Animation, AnimationClip, animation, SpriteFrame } from 'cc';
-import { CONTROL_ENUM, DIRECTION_ENUM, DIRECTION_ORDER_ENUM, ENTITY_STATE_ENUM, EVENT_ENUM, PARAMS_NAME_ENUM } from 'db://assets/Enum';
+import { CONTROL_ENUM, DIRECTION_ENUM, DIRECTION_ORDER_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM, PARAMS_NAME_ENUM } from 'db://assets/Enum';
 import EventManager from 'db://assets/Runtime/EventManager';
 import { TILE_HEIGHT, TILE_WIDTH } from 'db://assets/Scripts/Tile/TileManager';
 import ResourceManager from 'db://assets/Runtime/ResourceManager'
@@ -16,6 +16,7 @@ export class EntityManager extends Component {
 
   private _direction:DIRECTION_ENUM
   private _state: ENTITY_STATE_ENUM
+  private type:ENTITY_TYPE_ENUM
 
   get direction () {
     return this._direction
@@ -45,6 +46,7 @@ export class EntityManager extends Component {
 
     this.x = params.x
     this.y = params.y
+    this.type = params.type
     this.direction = params.direction
     this.state = params.state
   }
