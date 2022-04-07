@@ -115,6 +115,7 @@ export class PlayerManager extends EntityManager {
       }
 
       if (playerNextY < 0 || (playerNextY > mapColumnRount - 1) || (playerNextX < 0) || (playerNextX > mapRowCount - 1)) {
+        this.state = ENTITY_STATE_ENUM.BLOCKFRONT
         return true
       }
       playerTile = tileInfo[playerNextX][playerNextY]
@@ -122,6 +123,7 @@ export class PlayerManager extends EntityManager {
       if (playerTile && playerTile.moveable && (!weaponTile || weaponTile.turnable)) {
         // empty
       } else {
+        this.state = ENTITY_STATE_ENUM.BLOCKFRONT
         return true
       }
     } else if (inputDirection === CONTROL_ENUM.BOTTOM) {
@@ -148,6 +150,7 @@ export class PlayerManager extends EntityManager {
       }
 
       if (playerNextY < 0 || (playerNextY > mapColumnRount - 1) || (playerNextX < 0) || (playerNextX > mapRowCount - 1)) {
+        this.state = ENTITY_STATE_ENUM.BLOCKBACK
         return true
       }
       playerTile = tileInfo[playerNextX][playerNextY]
@@ -155,6 +158,7 @@ export class PlayerManager extends EntityManager {
       if (playerTile && playerTile.moveable && (!weaponTile || weaponTile.turnable)) {
         // empty
       } else {
+        this.state = ENTITY_STATE_ENUM.BLOCKBACK
         return true
       }
     } else if (inputDirection === CONTROL_ENUM.LEFT) {
@@ -181,6 +185,7 @@ export class PlayerManager extends EntityManager {
       }
 
       if (playerNextY < 0 || (playerNextY > mapColumnRount - 1) || (playerNextX < 0) || (playerNextX > mapRowCount - 1)) {
+        this.state = ENTITY_STATE_ENUM.BLOCKLEFT
         return true
       }
       playerTile = tileInfo[playerNextX][playerNextY]
@@ -188,6 +193,7 @@ export class PlayerManager extends EntityManager {
       if (playerTile && playerTile.moveable && (!weaponTile || weaponTile.turnable)) {
         // empty
       } else {
+        this.state = ENTITY_STATE_ENUM.BLOCKLEFT
         return true
       }
     } else if (inputDirection === CONTROL_ENUM.RIGHT) {
@@ -214,6 +220,7 @@ export class PlayerManager extends EntityManager {
       }
 
       if (playerNextY < 0 || (playerNextY > mapColumnRount - 1) || (playerNextX < 0) || (playerNextX > mapRowCount - 1)) {
+        this.state = ENTITY_STATE_ENUM.BLOCKRIGHT
         return true
       }
       playerTile = tileInfo[playerNextX][playerNextY]
@@ -221,6 +228,7 @@ export class PlayerManager extends EntityManager {
       if (playerTile && playerTile.moveable && (!weaponTile || weaponTile.turnable)) {
         // empty
       } else {
+        this.state = ENTITY_STATE_ENUM.BLOCKRIGHT
         return true
       }
     } else if (inputDirection === CONTROL_ENUM.TURNLEFT) {
@@ -245,6 +253,7 @@ export class PlayerManager extends EntityManager {
       ((!tileInfo[nextX][nextY] || tileInfo[nextX][nextY].turnable))) {
         // empty
       } else {
+        this.state = ENTITY_STATE_ENUM.BLOCKTURNLEFT
         return true
       }
     }
