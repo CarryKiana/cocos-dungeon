@@ -67,11 +67,13 @@ export class PlayerManager extends EntityManager {
       return
     }
 
-    if (this.state === ENTITY_STATE_ENUM.DEATH || this.state === ENTITY_STATE_ENUM.AIRDEATH) {
+    if (this.state === ENTITY_STATE_ENUM.DEATH || this.state === ENTITY_STATE_ENUM.AIRDEATH || this.state === ENTITY_STATE_ENUM.ATTACK) {
       return
     }
 
-    if (this.willAttack(inputDirection)) {
+    const id = this.willAttack(inputDirection)
+    if (id) {
+      EventManager.Instance.emit(EVENT_ENUM.ATTACK_ENEMY, id)
       return
     }
 
@@ -123,40 +125,40 @@ export class PlayerManager extends EntityManager {
   }
 
   willAttack (inputDirection: CONTROL_ENUM) {
-    const enemies = DataManager.Instance.enemies
+    const enemies = DataManager.Instance.enemies.filter(enemy => enemy.state !== ENTITY_STATE_ENUM.DEATH )
     for (let i = 0; i < enemies.length; i++) {
-      const { x: enemyX, y: enemyY } = enemies[i]
+      const { x: enemyX, y: enemyY, id: enemyId } = enemies[i]
       if (inputDirection === CONTROL_ENUM.TOP &&
         this.direction === DIRECTION_ENUM.TOP &&
         enemyX === this.x &&
         enemyY === this.targetY - 2
         ) {
         this.state = ENTITY_STATE_ENUM.ATTACK
-        return true
+        return enemyId
       } else if (inputDirection === CONTROL_ENUM.LEFT &&
         this.direction === DIRECTION_ENUM.LEFT &&
         enemyY === this.y &&
         enemyX === this.targetX - 2
         ) {
         this.state = ENTITY_STATE_ENUM.ATTACK
-        return true
+        return enemyId
       } else if (inputDirection === CONTROL_ENUM.BOTTOM &&
         this.direction === DIRECTION_ENUM.BOTTOM &&
         enemyX === this.x &&
         enemyY === this.targetY + 2
         ) {
         this.state = ENTITY_STATE_ENUM.ATTACK
-        return true
+        return enemyId
       } else if (inputDirection === CONTROL_ENUM.RIGHT &&
         this.direction === DIRECTION_ENUM.RIGHT &&
         enemyY === this.y &&
         enemyX === this.targetX - 2
         ) {
         this.state = ENTITY_STATE_ENUM.ATTACK
-        return true
+        return enemyId
       }
     }
-    return false
+    return ''
   }
 
   willBlock(inputDirection: CONTROL_ENUM) {

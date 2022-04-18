@@ -5,11 +5,12 @@ import { TILE_HEIGHT, TILE_WIDTH } from 'db://assets/Scripts/Tile/TileManager';
 import ResourceManager from 'db://assets/Runtime/ResourceManager'
 import { IEntity } from '../Levels';
 import { StateMachine } from './StateMachine';
+import { randomByLen } from '../Utils';
 const { ccclass, property } = _decorator
 
 @ccclass('EntityrManager')
 export class EntityManager extends Component {
-
+  id:string = randomByLen(12)
   x:number = 0
   y:number = 0
   fsm:StateMachine
@@ -54,4 +55,5 @@ export class EntityManager extends Component {
   update() {
     this.node.setPosition(this.x * TILE_WIDTH - TILE_WIDTH * 1.5, -this.y * TILE_HEIGHT + TILE_HEIGHT * 1.5)
   }
+  onDestroy () {}
 }
