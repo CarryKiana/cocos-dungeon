@@ -4,12 +4,14 @@ import State from '../../Base/State';
 import { getInitParamsNumber, getInitParamsTrigger, StateMachine } from '../../Base/StateMachine';
 import { CONTROL_ENUM, ENTITY_STATE_ENUM, EVENT_ENUM, FSM_PARAM_TYPE_ENUM, PARAMS_NAME_ENUM } from '../../Enum';
 import EventManager from '../../Runtime/EventManager';
+import AttackSubStateMachine from './AttackSubStateMachine';
 import BlockBackSubStateMachine from './BlockBackSubStateMachine';
 import BlockFrontSubStateMachine from './BlockFrontSubStateMachine';
 import BlockLeftSubStateMachine from './BlockLeftSubStateMachine';
 import BlockRightSubStateMachine from './BlockRightSubStateMachine';
 import BlockTurnLeftSubStateMachine from './BlockTurnLeftSubStateMachine';
 import BlockTurnRightSubStateMachine from './BlockTurnRightSubStateMachine';
+import DeathSubStateMachine from './DeathSubStateMachine';
 import IdleSubStateMachine from './IdleSubStateMachine';
 import TurnLeftSubStateMachine from './TurnLeftSubStateMachine';
 import TurnRightSubStateMachine from './TurnRightSubStateMachine';
@@ -40,6 +42,8 @@ export class PlayerStateMachine extends StateMachine {
     this.params.set(PARAMS_NAME_ENUM.BLOCKRIGHT, getInitParamsTrigger())
     this.params.set(PARAMS_NAME_ENUM.BLOCKTURNLEFT, getInitParamsTrigger())
     this.params.set(PARAMS_NAME_ENUM.BLOCKTURNRIGHT, getInitParamsTrigger())
+    this.params.set(PARAMS_NAME_ENUM.DEATH, getInitParamsTrigger())
+    this.params.set(PARAMS_NAME_ENUM.ATTACK, getInitParamsTrigger())
 
     this.params.set(PARAMS_NAME_ENUM.DIRECTION,getInitParamsNumber())
   }
@@ -54,12 +58,14 @@ export class PlayerStateMachine extends StateMachine {
     this.stateMachines.set(PARAMS_NAME_ENUM.BLOCKRIGHT, new BlockRightSubStateMachine(this))
     this.stateMachines.set(PARAMS_NAME_ENUM.BLOCKTURNLEFT, new BlockTurnLeftSubStateMachine(this))
     this.stateMachines.set(PARAMS_NAME_ENUM.BLOCKTURNRIGHT, new BlockTurnRightSubStateMachine(this))
+    this.stateMachines.set(PARAMS_NAME_ENUM.DEATH, new DeathSubStateMachine(this))
+    this.stateMachines.set(PARAMS_NAME_ENUM.ATTACK, new AttackSubStateMachine(this))
   }
 
   initAnimationEvent() {
     this.animationComponent.on(Animation.EventType.FINISHED, () => {
       const name = this.animationComponent.defaultClip.name
-      const whiteList = ['block', 'turn']
+      const whiteList = ['block', 'turn', 'attack']
       if (whiteList.some(v=> name.includes(v))) {
         this.node.getComponent(EntityManager).state = ENTITY_STATE_ENUM.IDLE
       }
@@ -74,11 +80,13 @@ export class PlayerStateMachine extends StateMachine {
       case this.stateMachines.get(PARAMS_NAME_ENUM.BLOCKBACK):
       case this.stateMachines.get(PARAMS_NAME_ENUM.BLOCKTURNLEFT):
       case this.stateMachines.get(PARAMS_NAME_ENUM.IDLE):
+      case this.stateMachines.get(PARAMS_NAME_ENUM.DEATH):
+        case this.stateMachines.get(PARAMS_NAME_ENUM.ATTACK):
         if (this.params.get(PARAMS_NAME_ENUM.BLOCKTURNLEFT).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.BLOCKTURNLEFT)
         } else if (this.params.get(PARAMS_NAME_ENUM.BLOCKTURNRIGHT).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.BLOCKTURNRIGHT)
-        }  else if (this.params.get(PARAMS_NAME_ENUM.BLOCKFRONT).value) {
+        } else if (this.params.get(PARAMS_NAME_ENUM.BLOCKFRONT).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.BLOCKFRONT)
         } else if (this.params.get(PARAMS_NAME_ENUM.BLOCKBACK).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.BLOCKBACK)
@@ -92,6 +100,10 @@ export class PlayerStateMachine extends StateMachine {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.TURNRIGHT)
         } else if (this.params.get(PARAMS_NAME_ENUM.IDLE).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.IDLE)
+        } else if (this.params.get(PARAMS_NAME_ENUM.DEATH).value) {
+          this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.DEATH)
+        } else if (this.params.get(PARAMS_NAME_ENUM.ATTACK).value) {
+          this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.ATTACK)
         } else {
           this.currentState = this.currentState
         }
