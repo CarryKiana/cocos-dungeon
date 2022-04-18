@@ -74,6 +74,7 @@ export class PlayerManager extends EntityManager {
     const id = this.willAttack(inputDirection)
     if (id) {
       EventManager.Instance.emit(EVENT_ENUM.ATTACK_ENEMY, id)
+      EventManager.Instance.emit(EVENT_ENUM.DOOR_OPEN)
       return
     }
 

@@ -17,7 +17,7 @@ export class WoodenSkeletonManager extends EntityManager {
     super.init({
       x: 2,
       y: 4,
-      type:ENTITY_TYPE_ENUM.PLAYER,
+      type:ENTITY_TYPE_ENUM.SKELETON_WOODEN,
       direction: DIRECTION_ENUM.TOP,
       state: ENTITY_STATE_ENUM.IDLE
     })
