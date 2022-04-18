@@ -2,6 +2,7 @@
 
 import { animation, AnimationClip, Sprite, SpriteFrame, UITransform } from "cc";
 import ResourceManager from "../Runtime/ResourceManager";
+import { sortSpriteFrame } from "../Utils";
 import { StateMachine } from "./StateMachine";
 
 
@@ -24,7 +25,7 @@ export default class State {
 
         const track = new animation.ObjectTrack()
         track.path = new animation.TrackPath().toComponent(Sprite).toProperty('spriteFrame')
-        const frames:Array<[number, SpriteFrame]> = spriteFrames.map((item,index)=>[ANIMATION_SPEED * index, item])
+        const frames:Array<[number, SpriteFrame]> = sortSpriteFrame(spriteFrames).map((item,index)=>[ANIMATION_SPEED * index, item])
         track.channel.curve.assignSorted(frames)
 
         this.animationClip.addTrack(track)
