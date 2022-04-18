@@ -1258,7 +1258,7 @@
     "component": "",
     "_componentId": "cd911Z/EuhKLKiEn79vTAzD",
     "handler": "handleCtrl",
-    "customEventData": ""
+    "customEventData": "TURNRIGHT"
   },
   {
     "__type__": "cc.Node",

@@ -84,6 +84,17 @@ export class PlayerManager extends EntityManager {
         this.direction = DIRECTION_ENUM.TOP
       }
       this.state = ENTITY_STATE_ENUM.TURNLEFT
+    } else if (inputDirection === CONTROL_ENUM.TURNRIGHT) {
+      if (this.direction === DIRECTION_ENUM.TOP) {
+        this.direction = DIRECTION_ENUM.RIGHT
+      } else if (this.direction === DIRECTION_ENUM.LEFT) {
+        this.direction = DIRECTION_ENUM.TOP
+      } else if (this.direction === DIRECTION_ENUM.BOTTOM) {
+        this.direction = DIRECTION_ENUM.LEFT
+      } else if (this.direction === DIRECTION_ENUM.RIGHT) {
+        this.direction = DIRECTION_ENUM.BOTTOM
+      }
+      this.state = ENTITY_STATE_ENUM.TURNRIGHT
     }
   }
 
@@ -254,6 +265,30 @@ export class PlayerManager extends EntityManager {
         // empty
       } else {
         this.state = ENTITY_STATE_ENUM.BLOCKTURNLEFT
+        return true
+      }
+    } else if (inputDirection === CONTROL_ENUM.TURNRIGHT) {
+      let nextX
+      let nextY
+      if (direction == DIRECTION_ENUM.TOP) {
+        nextX = x + 1
+        nextY = y - 1
+      } else if (direction == DIRECTION_ENUM.BOTTOM) {
+        nextX = x - 1
+        nextY = y + 1
+      } else if (direction == DIRECTION_ENUM.LEFT) {
+        nextX = x - 1
+        nextY = y - 1
+      } else if (direction == DIRECTION_ENUM.RIGHT) {
+        nextX = x + 1
+        nextY = y + 1
+      }
+      if ((!tileInfo[x][nextY] || tileInfo[x][nextY].turnable) &&
+      (!tileInfo[nextX][y] || tileInfo[nextX][y].turnable) &&
+      ((!tileInfo[nextX][nextY] || tileInfo[nextX][nextY].turnable))) {
+        // empty
+      } else {
+        this.state = ENTITY_STATE_ENUM.BLOCKTURNRIGHT
         return true
       }
     }
