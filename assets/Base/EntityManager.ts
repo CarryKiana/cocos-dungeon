@@ -3,8 +3,8 @@ import { CONTROL_ENUM, DIRECTION_ENUM, DIRECTION_ORDER_ENUM, ENTITY_STATE_ENUM, 
 import EventManager from 'db://assets/Runtime/EventManager';
 import { TILE_HEIGHT, TILE_WIDTH } from 'db://assets/Scripts/Tile/TileManager';
 import ResourceManager from 'db://assets/Runtime/ResourceManager'
-import { PlayerStateMachine } from 'db://assets/Scripts/Player/PlayerStateMachine';
 import { IEntity } from '../Levels';
+import { StateMachine } from './StateMachine';
 const { ccclass, property } = _decorator
 
 @ccclass('EntityrManager')
@@ -12,7 +12,7 @@ export class EntityManager extends Component {
 
   x:number = 0
   y:number = 0
-  fsm:PlayerStateMachine
+  fsm:StateMachine
 
   private _direction:DIRECTION_ENUM
   private _state: ENTITY_STATE_ENUM
