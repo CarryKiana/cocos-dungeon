@@ -164,6 +164,7 @@ export class PlayerManager extends EntityManager {
     const { tileInfo, mapRowCount, mapColumnRount } = DataManager.Instance
     const { x: doorX, y: doorY, state: doorState } = DataManager.Instance.door
     const enemies = DataManager.Instance.enemies.filter(enemy => enemy.state !== ENTITY_STATE_ENUM.DEATH)
+    const bursts = DataManager.Instance.bursts.filter(burst => burst.state !== ENTITY_STATE_ENUM.DEATH)
 
     let playerTile, weaponTile, playerNextY,playerNextX, weaponNextY, weaponNextX
     if (inputDirection === CONTROL_ENUM.TOP) {
@@ -197,6 +198,13 @@ export class PlayerManager extends EntityManager {
         if (((playerNextX === enemyX && playerNextY === enemyY) || (weaponNextX === enemyX && weaponNextY === enemyY))) {
           this.state = ENTITY_STATE_ENUM.BLOCKFRONT
           return true
+        }
+      }
+
+      for (let i = 0; i < bursts.length; i++) {
+        const { x: burstX, y: burstY } = bursts[i]
+        if ((playerNextX === burstX && playerNextY === burstY) && (!weaponTile || weaponTile.turnable)) {
+          return false
         }
       }
 
@@ -248,6 +256,13 @@ export class PlayerManager extends EntityManager {
         }
       }
 
+      for (let i = 0; i < bursts.length; i++) {
+        const { x: burstX, y: burstY } = bursts[i]
+        if ((playerNextX === burstX && playerNextY === burstY) && (!weaponTile || weaponTile.turnable)) {
+          return false
+        }
+      }
+
       if (playerNextY < 0 || (playerNextY > mapColumnRount - 1) || (playerNextX < 0) || (playerNextX > mapRowCount - 1)) {
         this.state = ENTITY_STATE_ENUM.BLOCKBACK
         return true
@@ -293,6 +308,13 @@ export class PlayerManager extends EntityManager {
         if (((playerNextX === enemyX && playerNextY === enemyY) || (weaponNextX === enemyX && weaponNextY === enemyY))) {
           this.state = ENTITY_STATE_ENUM.BLOCKLEFT
           return true
+        }
+      }
+
+      for (let i = 0; i < bursts.length; i++) {
+        const { x: burstX, y: burstY } = bursts[i]
+        if ((playerNextX === burstX && playerNextY === burstY) && (!weaponTile || weaponTile.turnable)) {
+          return false
         }
       }
 
@@ -343,6 +365,12 @@ export class PlayerManager extends EntityManager {
           return true
         }
       }
+      for (let i = 0; i < bursts.length; i++) {
+        const { x: burstX, y: burstY } = bursts[i]
+        if ((playerNextX === burstX && playerNextY === burstY) && (!weaponTile || weaponTile.turnable)) {
+          return false
+        }
+      }
 
       if (playerNextY < 0 || (playerNextY > mapColumnRount - 1) || (playerNextX < 0) || (playerNextX > mapRowCount - 1)) {
         this.state = ENTITY_STATE_ENUM.BLOCKRIGHT
@@ -383,6 +411,13 @@ export class PlayerManager extends EntityManager {
         if ((x === enemyX && nextY === enemyY) || (nextX === enemyX && y === enemyY) || (nextX === enemyX && nextY === enemyY)) {
           this.state = ENTITY_STATE_ENUM.BLOCKTURNLEFT
           return true
+        }
+      }
+
+      for (let i = 0; i < bursts.length; i++) {
+        const { x: burstX, y: burstY } = enemies[i]
+        if ((playerNextX === burstX && playerNextY === burstY) && (!weaponTile || weaponTile.turnable)) {
+          return false
         }
       }
 
