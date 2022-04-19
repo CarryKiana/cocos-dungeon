@@ -8,7 +8,7 @@ import { StateMachine } from './StateMachine';
 import { randomByLen } from '../Utils';
 const { ccclass, property } = _decorator
 
-@ccclass('EntityrManager')
+@ccclass('EntityManager')
 export class EntityManager extends Component {
   id:string = randomByLen(12)
   x:number = 0
