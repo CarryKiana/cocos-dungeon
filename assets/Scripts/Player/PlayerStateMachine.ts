@@ -4,6 +4,7 @@ import State from '../../Base/State';
 import { getInitParamsNumber, getInitParamsTrigger, StateMachine } from '../../Base/StateMachine';
 import { CONTROL_ENUM, ENTITY_STATE_ENUM, EVENT_ENUM, FSM_PARAM_TYPE_ENUM, PARAMS_NAME_ENUM } from '../../Enum';
 import EventManager from '../../Runtime/EventManager';
+import AirDeathSubStateMachine from './AirDeathSubStateMachine';
 import AttackSubStateMachine from './AttackSubStateMachine';
 import BlockBackSubStateMachine from './BlockBackSubStateMachine';
 import BlockFrontSubStateMachine from './BlockFrontSubStateMachine';
@@ -43,6 +44,7 @@ export class PlayerStateMachine extends StateMachine {
     this.params.set(PARAMS_NAME_ENUM.BLOCKTURNLEFT, getInitParamsTrigger())
     this.params.set(PARAMS_NAME_ENUM.BLOCKTURNRIGHT, getInitParamsTrigger())
     this.params.set(PARAMS_NAME_ENUM.DEATH, getInitParamsTrigger())
+    this.params.set(PARAMS_NAME_ENUM.AIRDEATH, getInitParamsTrigger())
     this.params.set(PARAMS_NAME_ENUM.ATTACK, getInitParamsTrigger())
 
     this.params.set(PARAMS_NAME_ENUM.DIRECTION,getInitParamsNumber())
@@ -59,6 +61,7 @@ export class PlayerStateMachine extends StateMachine {
     this.stateMachines.set(PARAMS_NAME_ENUM.BLOCKTURNLEFT, new BlockTurnLeftSubStateMachine(this))
     this.stateMachines.set(PARAMS_NAME_ENUM.BLOCKTURNRIGHT, new BlockTurnRightSubStateMachine(this))
     this.stateMachines.set(PARAMS_NAME_ENUM.DEATH, new DeathSubStateMachine(this))
+    this.stateMachines.set(PARAMS_NAME_ENUM.AIRDEATH, new AirDeathSubStateMachine(this))
     this.stateMachines.set(PARAMS_NAME_ENUM.ATTACK, new AttackSubStateMachine(this))
   }
 
@@ -81,7 +84,8 @@ export class PlayerStateMachine extends StateMachine {
       case this.stateMachines.get(PARAMS_NAME_ENUM.BLOCKTURNLEFT):
       case this.stateMachines.get(PARAMS_NAME_ENUM.IDLE):
       case this.stateMachines.get(PARAMS_NAME_ENUM.DEATH):
-        case this.stateMachines.get(PARAMS_NAME_ENUM.ATTACK):
+      case this.stateMachines.get(PARAMS_NAME_ENUM.AIRDEATH):
+      case this.stateMachines.get(PARAMS_NAME_ENUM.ATTACK):
         if (this.params.get(PARAMS_NAME_ENUM.BLOCKTURNLEFT).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.BLOCKTURNLEFT)
         } else if (this.params.get(PARAMS_NAME_ENUM.BLOCKTURNRIGHT).value) {
@@ -102,6 +106,8 @@ export class PlayerStateMachine extends StateMachine {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.IDLE)
         } else if (this.params.get(PARAMS_NAME_ENUM.DEATH).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.DEATH)
+        } else if (this.params.get(PARAMS_NAME_ENUM.AIRDEATH).value) {
+          this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.AIRDEATH)
         } else if (this.params.get(PARAMS_NAME_ENUM.ATTACK).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.ATTACK)
         } else {

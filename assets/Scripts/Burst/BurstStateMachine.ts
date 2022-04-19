@@ -3,16 +3,15 @@ import { EntityManager } from '../../Base/EntityManager';
 import State from '../../Base/State';
 import { getInitParamsNumber, getInitParamsTrigger, StateMachine } from '../../Base/StateMachine';
 import { CONTROL_ENUM, ENTITY_STATE_ENUM, EVENT_ENUM, FSM_PARAM_TYPE_ENUM, PARAMS_NAME_ENUM } from '../../Enum';
-import AttackSubStateMachine from './AttackSubStateMachine';
-import DeathSubStateMachine from './DeathSubStateMachine';
-import IdleSubStateMachine from './IdleSubStateMachine';
+
+const BASE_URL = 'texture/burst'
 
 const { ccclass, property } = _decorator
 
 
 
-@ccclass('WoodenSkeletonStateMachine')
-export class WoodenSkeletonStateMachine extends StateMachine {
+@ccclass('BurstStateMachine')
+export class BurstStateMachine extends StateMachine {
   async init() {
     this.animationComponent = this.addComponent(Animation)
 
@@ -30,19 +29,12 @@ export class WoodenSkeletonStateMachine extends StateMachine {
   }
 
   initStateMachine () {
-    this.stateMachines.set(PARAMS_NAME_ENUM.IDLE, new IdleSubStateMachine(this))
-    this.stateMachines.set(PARAMS_NAME_ENUM.DEATH, new DeathSubStateMachine(this))
-    this.stateMachines.set(PARAMS_NAME_ENUM.ATTACK, new AttackSubStateMachine(this))
+    this.stateMachines.set(PARAMS_NAME_ENUM.IDLE, new State(this, `${BASE_URL}/idle`))
+    this.stateMachines.set(PARAMS_NAME_ENUM.DEATH,  new State(this, `${BASE_URL}/death`))
+    this.stateMachines.set(PARAMS_NAME_ENUM.ATTACK,  new State(this, `${BASE_URL}/attack`))
   }
 
   initAnimationEvent() {
-    this.animationComponent.on(Animation.EventType.FINISHED, () => {
-      const name = this.animationComponent.defaultClip.name
-      const whiteList = ['attack', 'turn']
-      if (whiteList.some(v=> name.includes(v))) {
-        this.node.getComponent(EntityManager).state = ENTITY_STATE_ENUM.IDLE
-      }
-    })
   }
 
   run() {

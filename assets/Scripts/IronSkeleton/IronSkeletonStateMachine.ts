@@ -45,7 +45,6 @@ export class IronSkeletonStateMachine extends StateMachine {
         } else if (this.params.get(PARAMS_NAME_ENUM.DEATH).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.DEATH)
         } else {
-          console.log(111)
           this.currentState = this.currentState
         }
         break;

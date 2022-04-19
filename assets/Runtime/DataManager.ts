@@ -1,6 +1,7 @@
 import { EntityManager } from '../Base/EntityManager'
 import Singleton from '../Base/Singleton'
 import { ITile } from '../Levels'
+import { BurstManager } from '../Scripts/Burst/BurstManager'
 import { DoorManager } from '../Scripts/Door/DoorManager'
 import { PlayerManager } from '../Scripts/Player/PlayerManager'
 import { TileManager } from '../Scripts/Tile/TileManager'
@@ -13,6 +14,7 @@ export default class DataManager extends Singleton {
   player: PlayerManager
   door: DoorManager
   enemies: EntityManager[]
+  bursts: BurstManager[]
   static get Instance() {
     return super.GetInstance<DataManager>()
   }
@@ -21,6 +23,7 @@ export default class DataManager extends Singleton {
     this.mapInfo = []
     this.tileInfo = []
     this.enemies = []
+    this.bursts = []
     this.mapRowCount = 0
     this.mapColumnRount = 0
     this.player = null
