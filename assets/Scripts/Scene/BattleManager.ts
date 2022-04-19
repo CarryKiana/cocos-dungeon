@@ -6,10 +6,11 @@ import Levels, { ILevel } from '../../Levels'
 import DataManager  from '../../Runtime/DataManager';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
-import { EVENT_ENUM } from '../../Enum';
+import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM } from '../../Enum';
 import { PlayerManager } from '../Player/PlayerManager';
 import { WoodenSkeletonManager } from '../WoodenSkeleton/WoodenSkeletonManager';
 import { DoorManager } from '../Door/DoorManager';
+import { IronSkeletonManager } from '../IronSkeleton/IronSkeletonManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('BattleManager')
@@ -76,7 +77,13 @@ export class BattleManager extends Component {
       const player = createUINode()
       player.setParent(this.stage)
       const playerManager = player.addComponent(PlayerManager)
-      await playerManager.init()
+      await playerManager.init({
+        x: 2,
+        y: 8,
+        type:ENTITY_TYPE_ENUM.PLAYER,
+        direction: DIRECTION_ENUM.TOP,
+        state: ENTITY_STATE_ENUM.IDLE
+      })
       DataManager.Instance.player = playerManager
       EventManager.Instance.emit(EVENT_ENUM.PLAYER_BORN)
     }
@@ -85,8 +92,26 @@ export class BattleManager extends Component {
       const enemy = createUINode()
       enemy.setParent(this.stage)
       const woodenSkeletonManager = enemy.addComponent(WoodenSkeletonManager)
-      await woodenSkeletonManager.init()
+      await woodenSkeletonManager.init({
+        x: 2,
+        y: 2,
+        type:ENTITY_TYPE_ENUM.SKELETON_WOODEN,
+        direction: DIRECTION_ENUM.TOP,
+        state: ENTITY_STATE_ENUM.IDLE
+      })
       DataManager.Instance.enemies.push(woodenSkeletonManager)
+
+      const enemy2 = createUINode()
+      enemy2.setParent(this.stage)
+      const ironSkeletonManager = enemy2.addComponent(IronSkeletonManager)
+      await ironSkeletonManager.init({
+        x: 2,
+        y: 4,
+        type:ENTITY_TYPE_ENUM.SKELETON_WOODEN,
+        direction: DIRECTION_ENUM.TOP,
+        state: ENTITY_STATE_ENUM.IDLE
+      })
+      DataManager.Instance.enemies.push(ironSkeletonManager)
     }
 
     async generateDoor () {
