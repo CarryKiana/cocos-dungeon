@@ -7,6 +7,7 @@ import { ISpikes } from 'db://assets/Levels';
 import { StateMachine } from 'db://assets/Base/StateMachine';
 import { SpikesStateMachine } from './SpikesStateMachine'
 import { randomByLen } from 'db://assets/Utils';
+import DataManager from '../../Runtime/DataManager';
 const { ccclass, property } = _decorator
 
 @ccclass('SpikesManager')
@@ -53,10 +54,36 @@ export class SpikesManager extends Component {
     this.type = params.type
     this.totalCount = SPIKES_TYPE_MAP_TOTAL_COUNT_ENUM[params.type]
     this.count = params.count
+
+    EventManager.Instance.on(EVENT_ENUM.PLAYER_MOVE_END, this.onLoop, this)
+  }
+  onLoop () {
+    if (this.count === this.totalCount) {
+      this.count = 1
+    } else {
+      this.count++
+    }
+
+    this.onAttack()
+  }
+  backZero () {
+    this.count = 0
+  }
+
+  onAttack () {
+    if (!DataManager.Instance.player) {
+      return
+    }
+    const { x: playerX, y:PlayerY } = DataManager.Instance.player
+    if (this.x === playerX && this.y === PlayerY && this.count === this.totalCount) {
+      EventManager.Instance.emit(EVENT_ENUM.ATTACK_PLAYER, ENTITY_STATE_ENUM.DEATH)
+    }
   }
 
   update() {
     this.node.setPosition(this.x * TILE_WIDTH - TILE_WIDTH * 1.5, -this.y * TILE_HEIGHT + TILE_HEIGHT * 1.5)
   }
-  onDestroy () {}
+  onDestroy () {
+    EventManager.Instance.off(EVENT_ENUM.PLAYER_MOVE_END, this.onLoop)
+  }
 }

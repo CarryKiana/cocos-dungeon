@@ -4,6 +4,7 @@ import State from '../../Base/State';
 import { getInitParamsNumber, getInitParamsTrigger, StateMachine } from '../../Base/StateMachine';
 import { CONTROL_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM, FSM_PARAM_TYPE_ENUM, PARAMS_NAME_ENUM, SPIKES_COUNT_MAP_NUMBER_ENUM, SPIKES_TYPE_MAP_TOTAL_COUNT_ENUM } from '../../Enum';
 import SpikesFourSubStateMachine from './SpikesFourSubStateMachine';
+import { SpikesManager } from './SpikesManager';
 
 import SpikesOneSubStateMachine from './SpikesOneSubStateMachine';
 import SpikesThreeSubStateMachine from './SpikesThreeSubStateMachine';
@@ -37,13 +38,18 @@ export class SpikesStateMachine extends StateMachine {
   }
 
   initAnimationEvent() {
-    // this.animationComponent.on(Animation.EventType.FINISHED, () => {
-    //   const name = this.animationComponent.defaultClip.name
-    //   const whiteList = ['attack', 'turn']
-    //   if (whiteList.some(v=> name.includes(v))) {
-    //     this.node.getComponent(EntityManager).state = ENTITY_STATE_ENUM.IDLE
-    //   }
-    // })
+    this.animationComponent.on(Animation.EventType.FINISHED, () => {
+      const name = this.animationComponent.defaultClip.name
+      const value = this.getParams(PARAMS_NAME_ENUM.SPIKES_TOTAL_COUNT)
+      if (
+        (value === SPIKES_TYPE_MAP_TOTAL_COUNT_ENUM.SPIKES_ONE && name.includes('spikesone/two')) ||
+        (value === SPIKES_TYPE_MAP_TOTAL_COUNT_ENUM.SPIKES_TWO && name.includes('spikesone/three')) ||
+        (value === SPIKES_TYPE_MAP_TOTAL_COUNT_ENUM.SPIKES_THREE && name.includes('spikesone/four')) ||
+        (value === SPIKES_TYPE_MAP_TOTAL_COUNT_ENUM.SPIKES_FOUR && name.includes('spikesone/five'))
+      ) {
+        this.node.getComponent(SpikesManager).backZero()
+      }
+    })
   }
 
   run() {
