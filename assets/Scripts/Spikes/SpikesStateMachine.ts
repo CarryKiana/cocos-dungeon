@@ -2,7 +2,7 @@ import { _decorator, Component, Animation, AnimationClip, animation, SpriteFrame
 import { EntityManager } from '../../Base/EntityManager';
 import State from '../../Base/State';
 import { getInitParamsNumber, getInitParamsTrigger, StateMachine } from '../../Base/StateMachine';
-import { CONTROL_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM, FSM_PARAM_TYPE_ENUM, PARAMS_NAME_ENUM, SPIKES_TYPE_MAP_TOTAL_COUNT_ENUM } from '../../Enum';
+import { CONTROL_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM, FSM_PARAM_TYPE_ENUM, PARAMS_NAME_ENUM, SPIKES_COUNT_MAP_NUMBER_ENUM, SPIKES_TYPE_MAP_TOTAL_COUNT_ENUM } from '../../Enum';
 import SpikesFourSubStateMachine from './SpikesFourSubStateMachine';
 
 import SpikesOneSubStateMachine from './SpikesOneSubStateMachine';
@@ -47,7 +47,7 @@ export class SpikesStateMachine extends StateMachine {
   }
 
   run() {
-    const value = this.getParams(PARAMS_NAME_ENUM.SPIKES_TOTAL_COUNT)
+    const { value } = this.params.get(PARAMS_NAME_ENUM.SPIKES_TOTAL_COUNT)
     switch (this.currentState) {
       case this.stateMachines.get(ENTITY_TYPE_ENUM.SPIKES_ONE):
       case this.stateMachines.get(ENTITY_TYPE_ENUM.SPIKES_TWO):

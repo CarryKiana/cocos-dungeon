@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Sprite, UITransform, Animation, AnimationClip, animation, SpriteFrame } from 'cc';
-import { CONTROL_ENUM, DIRECTION_ENUM, DIRECTION_ORDER_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM, PARAMS_NAME_ENUM, SPIKES_COUNT_MAP_NUMBER_ENUM } from 'db://assets/Enum';
+import { CONTROL_ENUM, DIRECTION_ENUM, DIRECTION_ORDER_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM, PARAMS_NAME_ENUM, SPIKES_COUNT_MAP_NUMBER_ENUM, SPIKES_TYPE_MAP_TOTAL_COUNT_ENUM } from 'db://assets/Enum';
 import EventManager from 'db://assets/Runtime/EventManager';
 import { TILE_HEIGHT, TILE_WIDTH } from 'db://assets/Scripts/Tile/TileManager';
 import ResourceManager from 'db://assets/Runtime/ResourceManager'
@@ -51,9 +51,8 @@ export class SpikesManager extends Component {
     this.x = params.x
     this.y = params.y
     this.type = params.type
-    this.totalCount = SPIKES_COUNT_MAP_NUMBER_ENUM[this.type]
+    this.totalCount = SPIKES_TYPE_MAP_TOTAL_COUNT_ENUM[params.type]
     this.count = params.count
-    console.log(this)
   }
 
   update() {
