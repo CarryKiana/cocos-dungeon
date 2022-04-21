@@ -23,7 +23,6 @@ export class PlayerManager extends EntityManager {
     super.init(params)
     this.targetX = this.x
     this.targetY = this.y
-
     EventManager.Instance.on(EVENT_ENUM.PLAYER_CTRL, this.inputHandle, this)
     EventManager.Instance.on(EVENT_ENUM.ATTACK_PLAYER, this.onDead, this)
   }
@@ -72,7 +71,6 @@ export class PlayerManager extends EntityManager {
       EventManager.Instance.emit(EVENT_ENUM.DOOR_OPEN)
       return
     }
-
     if (this.willBlock(inputDirection)) {
       console.log('block')
       return
@@ -161,6 +159,8 @@ export class PlayerManager extends EntityManager {
 
   willBlock(inputDirection: CONTROL_ENUM) {
     const { targetX: x, targetY: y, direction } = this
+    console.log('这个方向哪去了呢', direction)
+    console.log(this.direction)
     const { tileInfo, mapRowCount, mapColumnRount } = DataManager.Instance
     const { x: doorX, y: doorY, state: doorState } = DataManager.Instance.door
     const enemies = DataManager.Instance.enemies.filter(enemy => enemy.state !== ENTITY_STATE_ENUM.DEATH)
@@ -415,7 +415,7 @@ export class PlayerManager extends EntityManager {
       }
 
       for (let i = 0; i < bursts.length; i++) {
-        const { x: burstX, y: burstY } = enemies[i]
+        const { x: burstX, y: burstY } = bursts[i]
         if ((playerNextX === burstX && playerNextY === burstY) && (!weaponTile || weaponTile.turnable)) {
           return false
         }
@@ -469,5 +469,9 @@ export class PlayerManager extends EntityManager {
       }
     }
     return false
+  }
+  onDestroy () {
+    EventManager.Instance.off(EVENT_ENUM.PLAYER_CTRL, this.inputHandle)
+    EventManager.Instance.off(EVENT_ENUM.ATTACK_PLAYER, this.onDead)
   }
 }

@@ -63,7 +63,6 @@ export class SpikesManager extends Component {
     } else {
       this.count++
     }
-    console.log(this.count)
     this.onAttack()
   }
   backZero () {
