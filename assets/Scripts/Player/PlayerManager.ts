@@ -159,8 +159,6 @@ export class PlayerManager extends EntityManager {
 
   willBlock(inputDirection: CONTROL_ENUM) {
     const { targetX: x, targetY: y, direction } = this
-    console.log('这个方向哪去了呢', direction)
-    console.log(this.direction)
     const { tileInfo, mapRowCount, mapColumnRount } = DataManager.Instance
     const { x: doorX, y: doorY, state: doorState } = DataManager.Instance.door
     const enemies = DataManager.Instance.enemies.filter(enemy => enemy.state !== ENTITY_STATE_ENUM.DEATH)
