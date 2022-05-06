@@ -13,6 +13,7 @@ import { DoorManager } from '../Door/DoorManager';
 import { IronSkeletonManager } from '../IronSkeleton/IronSkeletonManager';
 import { BurstManager } from '../Burst/BurstManager';
 import { SpikesManager } from '../Spikes/SpikesManager';
+import { SmokeManager } from '../Smoke/SmokeManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('BattleManager')
@@ -24,6 +25,7 @@ export class BattleManager extends Component {
       DataManager.Instance.levelIndex = 1
       EventManager.Instance.on(EVENT_ENUM.NEXT_LEVEL, this.nextLevel, this)
       EventManager.Instance.on(EVENT_ENUM.PLAYER_MOVE_END, this.checkArrived, this)
+      EventManager.Instance.on(EVENT_ENUM.SHOW_SMOKE, this.generateSmoke, this)
     }
 
     onDestroy() {
@@ -136,7 +138,23 @@ export class BattleManager extends Component {
       DataManager.Instance.door = doorManager
     }
 
+    async generateSmoke (x:number, y: number, direction: DIRECTION_ENUM) {
+      const smoke = createUINode()
+      smoke.setParent(this.stage)
+      const smokeManager = smoke.addComponent(SmokeManager)
+      await smokeManager.init({
+        x,
+        y,
+        direction,
+        state: ENTITY_STATE_ENUM.IDLE,
+        type: ENTITY_TYPE_ENUM.SMOKE
+      })
+      DataManager.Instance.smokes.push(smokeManager)
+    }
     checkArrived () {
+      if (!DataManager.Instance.player || !DataManager.Instance.door) {
+        return
+      }
       const { x: plauerX, y: playerY } = DataManager.Instance.player
       const { x: doorX, y: doorY, state: doorState } = DataManager.Instance.door
       if (plauerX === doorX && playerY === doorY && doorState === ENTITY_STATE_ENUM.DEATH) {
