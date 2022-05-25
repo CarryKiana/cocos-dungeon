@@ -20,6 +20,7 @@ const { ccclass, property } = _decorator;
 export class BattleManager extends Component {
     level: ILevel
     stage: Node
+    private smokeLayer: Node
 
     onLoad () {
       DataManager.Instance.levelIndex = 1
@@ -51,6 +52,7 @@ export class BattleManager extends Component {
         this.generateTileMap()
         this.generateBurst()
         this.generateSpikes()
+        this.generateSmokeLayer()
         this.generateDoor()
         this.generateEnemies()
         this.generatePlayer()
@@ -139,18 +141,34 @@ export class BattleManager extends Component {
     }
 
     async generateSmoke (x:number, y: number, direction: DIRECTION_ENUM) {
-      const smoke = createUINode()
-      smoke.setParent(this.stage)
-      const smokeManager = smoke.addComponent(SmokeManager)
-      await smokeManager.init({
-        x,
-        y,
-        direction,
-        state: ENTITY_STATE_ENUM.IDLE,
-        type: ENTITY_TYPE_ENUM.SMOKE
-      })
-      DataManager.Instance.smokes.push(smokeManager)
+      const item = DataManager.Instance.smokes.find(smoke => smoke.state === ENTITY_STATE_ENUM.DEATH)
+      if (item) {
+        console.log('smoke-pool')
+        item.x = x
+        item.y = y
+        item.direction = direction
+        item.state = ENTITY_STATE_ENUM.IDLE
+        item.node.setPosition(item.x * TILE_WIDTH - TILE_WIDTH * 1.5, -item.y * TILE_HEIGHT + TILE_HEIGHT * 1.5)
+      } else {
+        const smoke = createUINode()
+        smoke.setParent(this.smokeLayer)
+        const smokeManager = smoke.addComponent(SmokeManager)
+        await smokeManager.init({
+          x,
+          y,
+          direction,
+          state: ENTITY_STATE_ENUM.IDLE,
+          type: ENTITY_TYPE_ENUM.SMOKE
+        })
+        DataManager.Instance.smokes.push(smokeManager)
+      }
     }
+
+    generateSmokeLayer() {
+      this.smokeLayer = createUINode()
+      this.smokeLayer.setParent(this.stage)
+    }
+
     checkArrived () {
       if (!DataManager.Instance.player || !DataManager.Instance.door) {
         return
