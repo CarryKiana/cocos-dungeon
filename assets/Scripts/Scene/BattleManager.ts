@@ -15,6 +15,7 @@ import { BurstManager } from '../Burst/BurstManager';
 import { SpikesManager } from '../Spikes/SpikesManager';
 import { SmokeManager } from '../Smoke/SmokeManager';
 import FaderManager from '../../Runtime/FaderManager';
+import { ShakeManager } from '../UI/ShakeManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('BattleManager')
@@ -78,6 +79,7 @@ export class BattleManager extends Component {
     generateStage () {
       this.stage = createUINode()
       this.stage.setParent(this.node)
+      this.stage.addComponent(ShakeManager)
     }
 
     async generateTileMap () {
@@ -190,7 +192,7 @@ export class BattleManager extends Component {
 
       const disX = TILE_WIDTH * mapRowCount / 2
       const disY = TILE_HEIGHT * mapColumnRount / 2 + 80
-
+      this.stage.getComponent(ShakeManager).stop()
       this.stage.setPosition(-disX, disY)
     }
 }
