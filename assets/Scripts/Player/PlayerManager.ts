@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Sprite, UITransform, Animation, AnimationClip, animation, SpriteFrame } from 'cc';
-import { CONTROL_ENUM, DIRECTION_ENUM, DIRECTION_ORDER_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM, PARAMS_NAME_ENUM } from '../../Enum';
+import { CONTROL_ENUM, DIRECTION_ENUM, DIRECTION_ORDER_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM, PARAMS_NAME_ENUM, SHAKE_TYPE_ENUM } from '../../Enum';
 import EventManager from '../../Runtime/EventManager';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import ResourceManager from '../../Runtime/ResourceManager'
@@ -72,7 +72,35 @@ export class PlayerManager extends EntityManager {
       return
     }
     if (this.willBlock(inputDirection)) {
-      EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE)
+      if (inputDirection === CONTROL_ENUM.TOP) {
+        EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.TOP)
+      } else if (inputDirection === CONTROL_ENUM.BOTTOM) {
+        EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.BOTTOM)
+      } else if (inputDirection === CONTROL_ENUM.LEFT) {
+        EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.LEFT)
+      } else if (inputDirection === CONTROL_ENUM.RIGHT) {
+        EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.RIGHT)
+      } else if (inputDirection === CONTROL_ENUM.TURNLEFT) {
+        if (this.direction === DIRECTION_ENUM.TOP) {
+          EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.LEFT)
+        } else if (this.direction === DIRECTION_ENUM.BOTTOM) {
+          EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.RIGHT)
+        } else if (this.direction === DIRECTION_ENUM.LEFT) {
+          EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.BOTTOM)
+        } else if (this.direction === DIRECTION_ENUM.RIGHT) {
+          EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.TOP)
+        }
+      } else if (inputDirection === CONTROL_ENUM.TURNRIGHT) {
+        if (this.direction === DIRECTION_ENUM.TOP) {
+          EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.RIGHT)
+        } else if (this.direction === DIRECTION_ENUM.BOTTOM) {
+          EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.LEFT)
+        } else if (this.direction === DIRECTION_ENUM.LEFT) {
+          EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.TOP)
+        } else if (this.direction === DIRECTION_ENUM.RIGHT) {
+          EventManager.Instance.emit(EVENT_ENUM.SCREEN_SHAKE, SHAKE_TYPE_ENUM.BOTTOM)
+        }
+      }
       return
     }
     this.move(inputDirection)
