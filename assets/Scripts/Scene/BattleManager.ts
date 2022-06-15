@@ -1,12 +1,12 @@
 
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, director } from 'cc';
 import { TileMapManager } from '../Tile/TileMapManager'
 import { createUINode } from '../../Utils'
 import Levels, { ILevel } from '../../Levels'
 import DataManager, { IRecord }  from '../../Runtime/DataManager';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
-import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM } from '../../Enum';
+import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM, SCENE_ENUM } from '../../Enum';
 import { PlayerManager } from '../Player/PlayerManager';
 import { WoodenSkeletonManager } from '../WoodenSkeleton/WoodenSkeletonManager';
 import { DoorManager } from '../Door/DoorManager';
@@ -23,6 +23,7 @@ export class BattleManager extends Component {
     level: ILevel
     stage: Node
     private smokeLayer: Node
+    private inited = false
 
     onLoad () {
       DataManager.Instance.levelIndex = 1
@@ -31,6 +32,8 @@ export class BattleManager extends Component {
       EventManager.Instance.on(EVENT_ENUM.SHOW_SMOKE, this.generateSmoke, this)
       EventManager.Instance.on(EVENT_ENUM.RECORD_STEP, this.record, this)
       EventManager.Instance.on(EVENT_ENUM.REVOKE_STEP, this.revoke, this)
+      EventManager.Instance.on(EVENT_ENUM.RESTART_LEVEL, this.initLevel, this)
+      EventManager.Instance.on(EVENT_ENUM.QUIT_BATTLE, this.outBattle, this)
     }
 
     onDestroy() {
@@ -39,6 +42,8 @@ export class BattleManager extends Component {
       EventManager.Instance.off(EVENT_ENUM.SHOW_SMOKE, this.generateSmoke)
       EventManager.Instance.off(EVENT_ENUM.RECORD_STEP, this.record)
       EventManager.Instance.off(EVENT_ENUM.REVOKE_STEP, this.revoke)
+      EventManager.Instance.off(EVENT_ENUM.RESTART_LEVEL, this.initLevel)
+      EventManager.Instance.off(EVENT_ENUM.QUIT_BATTLE, this.outBattle)
     }
 
     start () {
@@ -49,7 +54,12 @@ export class BattleManager extends Component {
     async initLevel () {
       const level = Levels[`level${DataManager.Instance.levelIndex}`]
       if (level) {
-        await FaderManager.Instance.fadeIn()
+        if (this.inited) {
+          await FaderManager.Instance.fadeIn()
+        } else {
+          await FaderManager.Instance.mask()
+        }
+
         this.clearLevel()
 
         this.level = level
@@ -69,7 +79,15 @@ export class BattleManager extends Component {
         ])
 
         await FaderManager.Instance.fadeOut()
+        this.inited = true
+      } else {
+        this.outBattle()
       }
+    }
+
+    async outBattle () {
+      await FaderManager.Instance.fadeIn()
+      director.loadScene(SCENE_ENUM.Start)
     }
 
     nextLevel() {
