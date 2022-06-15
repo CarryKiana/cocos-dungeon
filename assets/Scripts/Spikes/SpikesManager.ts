@@ -19,7 +19,7 @@ export class SpikesManager extends Component {
 
   private _count: number
   private _totalCount: number
-  private type:ENTITY_TYPE_ENUM
+  type:ENTITY_TYPE_ENUM
 
   get count () {
     return this._count

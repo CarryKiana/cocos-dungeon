@@ -3,7 +3,7 @@ import { _decorator, Component, Node } from 'cc';
 import { TileMapManager } from '../Tile/TileMapManager'
 import { createUINode } from '../../Utils'
 import Levels, { ILevel } from '../../Levels'
-import DataManager  from '../../Runtime/DataManager';
+import DataManager, { IRecord }  from '../../Runtime/DataManager';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import EventManager from '../../Runtime/EventManager';
 import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_ENUM } from '../../Enum';
@@ -189,11 +189,68 @@ export class BattleManager extends Component {
     }
     adaptPos () {
       const { mapRowCount, mapColumnRount } = DataManager.Instance
-
       const disX = TILE_WIDTH * mapRowCount / 2
       const disY = TILE_HEIGHT * mapColumnRount / 2 + 80
       this.stage.getComponent(ShakeManager).stop()
       this.stage.setPosition(-disX, disY)
+    }
+
+    record () {
+      const item: IRecord = {
+        player: {
+          x: DataManager.Instance.player.x,
+          y: DataManager.Instance.player.y,
+          direction: DataManager.Instance.player.direction,
+          state: DataManager.Instance.player.state,
+          type: DataManager.Instance.player.type
+        },
+        door:{
+          x: DataManager.Instance.door.x,
+          y: DataManager.Instance.door.y,
+          direction: DataManager.Instance.door.direction,
+          state: DataManager.Instance.door.state,
+          type: DataManager.Instance.door.type
+        },
+        enemies: DataManager.Instance.enemies.map(({x,y,direction,state,type})=>({x,y,direction,state,type})),
+        bursts: DataManager.Instance.bursts.map(({x,y,direction,state,type})=>({x,y,direction,state,type})),
+        spikes:DataManager.Instance.spikes.map(({x,y,count,type})=>({x,y,count,type}))
+      }
+      DataManager.Instance.records.push(item)
+    }
+
+    revoke () {
+      const item = DataManager.Instance.records.pop()
+      if (item) {
+        DataManager.Instance.player.x = DataManager.Instance.player.targetX = item.player.x
+        DataManager.Instance.player.y = DataManager.Instance.player.targetY = item.player.y
+        DataManager.Instance.player.direction = item.player.direction
+        DataManager.Instance.player.state = item.player.state
+
+        DataManager.Instance.door.x = item.door.x
+        DataManager.Instance.door.y = item.door.y
+        DataManager.Instance.door.direction = item.door.direction
+        DataManager.Instance.door.state = item.door.state
+
+        DataManager.Instance.enemies.forEach((enemy,index) => {
+          enemy.x = item.enemies[index].x
+          enemy.y = item.enemies[index].y
+          enemy.direction = item.enemies[index].direction
+          enemy.state = item.enemies[index].state
+        })
+
+        DataManager.Instance.bursts.forEach((burst,index) => {
+          burst.x = item.bursts[index].x
+          burst.y = item.bursts[index].y
+          burst.state = item.bursts[index].state
+        })
+
+        DataManager.Instance.spikes.forEach((spike,index) => {
+          spike.x = item.spikes[index].x
+          spike.y = item.spikes[index].y
+          spike.count = item.spikes[index].count
+          spike.type = item.spikes[index].type
+        })
+      }
     }
 }
 
