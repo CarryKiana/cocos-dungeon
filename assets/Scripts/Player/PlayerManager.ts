@@ -68,7 +68,6 @@ export class PlayerManager extends EntityManager {
     if (this.state === ENTITY_STATE_ENUM.DEATH || this.state === ENTITY_STATE_ENUM.AIRDEATH || this.state === ENTITY_STATE_ENUM.ATTACK) {
       return
     }
-
     const id = this.willAttack(inputDirection)
     if (id) {
       EventManager.Instance.emit(EVENT_ENUM.RECORD_STEP)
@@ -192,7 +191,7 @@ export class PlayerManager extends EntityManager {
       } else if (inputDirection === CONTROL_ENUM.RIGHT &&
         this.direction === DIRECTION_ENUM.RIGHT &&
         enemyY === this.y &&
-        enemyX === this.targetX - 2
+        enemyX === this.targetX + 2
         ) {
         this.state = ENTITY_STATE_ENUM.ATTACK
         return enemyId
@@ -289,7 +288,6 @@ export class PlayerManager extends EntityManager {
         this.state = ENTITY_STATE_ENUM.BLOCKBACK
         return true
       }
-
       for (let i = 0; i < enemies.length; i++) {
         const { x: enemyX, y: enemyY } = enemies[i]
         if (((playerNextX === enemyX && playerNextY === enemyY) || (weaponNextX === enemyX && weaponNextY === enemyY))) {
