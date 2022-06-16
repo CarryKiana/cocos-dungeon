@@ -254,8 +254,8 @@ export class PlayerManager extends EntityManager {
         this.state = ENTITY_STATE_ENUM.BLOCKFRONT
         return true
       }
-      playerTile = tileInfo[playerNextX][playerNextY]
-      weaponTile = tileInfo[weaponNextX][weaponNextY]
+      playerTile = tileInfo[playerNextX] ? tileInfo[playerNextX][playerNextY] : null
+      weaponTile = tileInfo[weaponNextX] ? tileInfo[weaponNextX][weaponNextY] : null
       if (playerTile && playerTile.moveable && (!weaponTile || weaponTile.turnable)) {
         // empty
       } else {
@@ -309,8 +309,8 @@ export class PlayerManager extends EntityManager {
         this.state = ENTITY_STATE_ENUM.BLOCKBACK
         return true
       }
-      playerTile = tileInfo[playerNextX][playerNextY]
-      weaponTile = tileInfo[weaponNextX][weaponNextY]
+      playerTile = tileInfo[playerNextX] ? tileInfo[playerNextX][playerNextY] : null
+      weaponTile = tileInfo[weaponNextX] ? tileInfo[weaponNextX][weaponNextY] : null
       if (playerTile && playerTile.moveable && (!weaponTile || weaponTile.turnable)) {
         // empty
       } else {
@@ -364,8 +364,8 @@ export class PlayerManager extends EntityManager {
         this.state = ENTITY_STATE_ENUM.BLOCKLEFT
         return true
       }
-      playerTile = tileInfo[playerNextX][playerNextY]
-      weaponTile = tileInfo[weaponNextX][weaponNextY]
+      playerTile = tileInfo[playerNextX] ? tileInfo[playerNextX][playerNextY] : null
+      weaponTile = tileInfo[weaponNextX] ? tileInfo[weaponNextX][weaponNextY] : null
       if (playerTile && playerTile.moveable && (!weaponTile || weaponTile.turnable)) {
         // empty
       } else {
@@ -418,8 +418,8 @@ export class PlayerManager extends EntityManager {
         this.state = ENTITY_STATE_ENUM.BLOCKRIGHT
         return true
       }
-      playerTile = tileInfo[playerNextX][playerNextY]
-      weaponTile = tileInfo[weaponNextX][weaponNextY]
+      playerTile = tileInfo[playerNextX] ? tileInfo[playerNextX][playerNextY] : null
+      weaponTile = tileInfo[weaponNextX] ? tileInfo[weaponNextX][weaponNextY] : null
       if (playerTile && playerTile.moveable && (!weaponTile || weaponTile.turnable)) {
         // empty
       } else {
